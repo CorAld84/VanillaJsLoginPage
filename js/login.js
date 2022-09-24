@@ -28,3 +28,20 @@ function validateonSubmit() {
         }
     });
 };
+
+function validateFields() {
+    if (field.value.trim() === "") {
+        this.setStatus(
+            field,
+            `${field.previosElementSibling.innerText} cannot be blank`,
+            "error"
+        );
+        return false;
+    } else {
+        if(field.type == "password") {
+            if(field.value.length < 8) {
+                
+            }
+        }
+    }
+}
