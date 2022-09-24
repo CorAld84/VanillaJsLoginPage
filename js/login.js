@@ -38,10 +38,41 @@ function validateFields() {
         );
         return false;
     } else {
-        if(field.type == "password") {
-            if(field.value.length < 8) {
-                
-            }
+        if (field.type == "password") {
+            if (field.value.length < 8) {
+                this.setStatus(
+                    field,
+                    `${field.previousElementSibling.innerText} must be at least 8 characters`,
+                    "error"
+                );
+                return false;
+
+            } else {
+                this.setStatus(field, null, "success");
+                return true;
+            };
+        } else {
+            this.setStatus(field, null, "success");
+            return true;
+        };
+    };
+};
+
+setStatus(field, message, sta) {
+
+    const errorMessage = field.parentElement.querySelector(".error-message");
+
+
+    if (sta == "success") {
+        if (errorMessage) {
+            errorMessage.innerText = "";
         }
+        field.classList.remove("input-error");
+    }
+
+    if (sta == "error") {
+        errorMessage.innerText = message;
+        field.classList.add("input-error");
     }
 }
+
