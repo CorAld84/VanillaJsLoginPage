@@ -4,75 +4,96 @@ class Login {
         this.fields = fields;
         this.validateonSubmit();
     };
-};
 
-function validateonSubmit() {
-    let self = this;
+    validateonSubmit() {
+        let self = this;
 
-    this.form.addEventListener('submit', (event) => {
+        this.form.addEventListener('submit', (event) => {
 
-        event.preventDefault();
-        var error = 0;
+            event.preventDefault();
+            var error = 0;
 
-        self.fields.array.forEach(field => {
-            const input = document.querySelector(`#${field}`);
+            self.fields.forEach(field => {
+                const input = document.querySelector(`#${field}`);
 
-            if (self.validateFields(input) == false) {
-                error++;
+                if (self.validateFields(input) == false) {
+                    error++;
+                }
+            });
+
+            if (error == 0) {
+                localStorage.setItem("auth", 1);
+                this.form.submit();
             }
         });
+    };
 
-        if (error == 0) {
-            localStorage.setItem("auth", 1);
-            this.form.submit();
-        }
-    });
-};
+    validateFields(field) {
+        if (field.value.trim() === "") {
+            this.setStatus(
+                field,
+                `${field.previousElementSibling.innerText} cannot be blank`,
+                "error"
+            );
 
-function validateFields() {
-    if (field.value.trim() === "") {
-        this.setStatus(
-            field,
-            `${field.previosElementSibling.innerText} cannot be blank`,
-            "error"
-        );
-        return false;
-    } else {
-        if (field.type == "password") {
-            if (field.value.length < 8) {
-                this.setStatus(
-                    field,
-                    `${field.previousElementSibling.innerText} must be at least 8 characters`,
-                    "error"
-                );
-                return false;
+            return false;
 
+        } else {
+            if (field.type == "password") {
+                if (field.value.length < 8) {
+                    this.setStatus(
+                        field,
+                        `${field.previousElementSibling.innerText} must be at least 8 characters`,
+                        "error"
+                    );
+
+                    return false;
+
+                } else {
+                    this.setStatus(field, null, "success");
+                    
+                    return true;
+                };
             } else {
                 this.setStatus(field, null, "success");
+                
                 return true;
             };
-        } else {
-            this.setStatus(field, null, "success");
-            return true;
         };
     };
+
+    setStatus(field, message, sta) {
+
+        const errorMessage = field.parentElement.querySelector(".error-message");
+
+
+        if (sta == "success") {
+            if (errorMessage) {
+                errorMessage.innerText = "";
+            }
+            field.classList.remove("input-error");
+        };
+
+        if (sta == "error") {
+            errorMessage.innerText = message;
+            field.classList.add("input-error");
+        };
+    };
+
 };
 
-setStatus(field, message, sta) {
+const form = document.querySelector(".loginForm");
 
-    const errorMessage = field.parentElement.querySelector(".error-message");
+console.log(form);
 
+if (form) {
 
-    if (sta == "success") {
-        if (errorMessage) {
-            errorMessage.innerText = "";
-        }
-        field.classList.remove("input-error");
-    }
+    const fields = ["username", "password"];
 
-    if (sta == "error") {
-        errorMessage.innerText = message;
-        field.classList.add("input-error");
-    }
+    const validator = new Login(form, fields);
 }
+
+
+
+
 
