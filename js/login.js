@@ -16,6 +16,7 @@ class Login {
             self.fields.forEach(field => {
                 const input = document.querySelector(`#${field}`);
 
+                console.log(input)
                 if (self.validateFields(input) == false) {
                     error++;
                 }
@@ -51,12 +52,12 @@ class Login {
 
                 } else {
                     this.setStatus(field, null, "success");
-                    
+
                     return true;
                 };
             } else {
                 this.setStatus(field, null, "success");
-                
+
                 return true;
             };
         };
@@ -84,7 +85,6 @@ class Login {
 
 const form = document.querySelector(".loginForm");
 
-console.log(form);
 
 if (form) {
 
